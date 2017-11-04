@@ -1,0 +1,64 @@
+.container {
+  background: lightgrey;
+  width: 400px;
+  margin: 0 auto;
+  display: flex;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+
+.slide {
+  width: 100%;
+  flex: none;
+  transition: none;
+}
+
+.animation .slide {
+  transition: transform 2s;
+}
+
+.slide:not(.current):not(.next):not(.prev) {
+    display: none;
+}
+
+.next {
+  order: 2;
+}
+
+.current {
+  order: 1;
+}
+
+.prev {
+  order: 0;
+  margin-left: -100%;
+}
+
+
+.animation-left .current,
+.animation-left .next,
+.animation-left .prev {
+  transform: translateX(-100%);
+}
+
+.animation-right .current,
+.animation-right .next,
+.animation-right .prev {
+  transform: translateX(100%);
+}
+
+.s1 {
+  background: red;
+}
+
+.s2 {
+  background: green;
+}
+
+.s3 {
+  background: blue;
+}
+
+.s4 {
+  background: hotpink;
+}
