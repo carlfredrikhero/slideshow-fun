@@ -1,50 +1,90 @@
+:root {
+  font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+html {
+  touch-action: manipulation;
+}
+
 .container {
   background: lightgrey;
-  width: 400px;
+  max-width: 100%;
   margin: 0 auto;
   display: flex;
-  overflow-y: hidden;
-  overflow-x: scroll;
+  overflow:hidden;
+  touch-action: pan-x;
+  position: relative;
 }
 
 .slide {
   width: 100%;
   flex: none;
   transition: none;
+  display: flex;
+  height: 200px;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
 }
 
 .animation .slide {
-  transition: transform 2s;
+  transition: transform .5s ease-out;
 }
 
 .slide:not(.current):not(.next):not(.prev) {
     display: none;
 }
 
-.next {
+.slide.next {
   order: 2;
 }
 
-.current {
+.slide.current {
   order: 1;
 }
 
-.prev {
+.slide.prev {
   order: 0;
   margin-left: -100%;
 }
 
 
-.animation-left .current,
-.animation-left .next,
-.animation-left .prev {
+.animation-next .slide.current,
+.animation-next .slide.next,
+.animation-next .slide.prev {
   transform: translateX(-100%);
 }
 
-.animation-right .current,
-.animation-right .next,
-.animation-right .prev {
+.animation-prev .slide.current,
+.animation-prev .slide.next,
+.animation-prev .slide.prev {
   transform: translateX(100%);
+}
+
+.indicators {
+  display: flex;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.indicators a {
+  color: goldenrod;
+}
+
+.indicators a:before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 2px solid;
+  margin: 0 5px;
+  border-radius: 50%;
+}
+
+.indicators a.current:before {
+  background: goldenrod;
 }
 
 .s1 {

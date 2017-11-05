@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>Slider</title>
+  <title>Slideshow</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,96 +14,28 @@
     <div class="slide s2 next">2</div>
     <div class="slide s3">3</div>
     <div class="slide s4">4</div>
+    <div class="indicators">
+      <a href="#" class="current"></a>
+      <a href="#"></a>
+      <a href="#"></a>
+      <a href="#"></a>
+    </div>
   </div>
- <script>
-
+<script src="new.js"></script>
+<script>
   var get = (selector) => document.querySelector(selector)
-  var getAll = (selector) =>
-    Array.from(document.querySelectorAll(selector))
-
-  var currentIndex = 0
+  var getAll = (selector) => Array.from(document.querySelectorAll(selector))
 
   var btnLeft = get('#left')
   var btnRight = get('#right')
   var container = get('.container')
   var slides = getAll('.slide');
+  var indicators = getAll('.indicators a');
 
-  var current = _ => slides[currentIndex]
+  var slideShow = Slideshow(container, slides, indicators)
 
-  var next = _ => slides[(currentIndex + 1) % slides.length]
-
-  var prev = _ => slides[(currentIndex === 0) ? slides.length -1 : currentIndex - 1]
-
-  var iterate = dir =>
-    (dir ==='left')
-    ? currentIndex = (currentIndex + 1) % slides.length
-    : currentIndex = (currentIndex === 0) ? slides.length - 1 : currentIndex - 1
-
-  var removeClass = cls => el => el.classList.remove(cls)
-  var addClass = cls => el => el.classList.add(cls)
-
-  var stopAnimationLeft = (ev) => stopAnimation('left', ev)
-  var stopAnimationRight = (ev) => stopAnimation('right', ev)
-
-  var animate = (dir) => () => {
-    container.classList.add('animation', 'animation-' + dir)
-    current().addEventListener('transitionend', (dir === 'left' ? stopAnimationLeft : stopAnimationRight))
-  }
-
-  var stopAnimation = (dir, ev) => {
-    console.log(ev.target)
-    container.classList.remove('animation', 'animation-' + dir);
-    current().removeEventListener('transitionend', (dir === 'left' ? stopAnimationLeft : stopAnimationRight))
-
-    slides.forEach(removeClass('next'))
-    slides.forEach(removeClass('current'))
-    slides.forEach(removeClass('prev'))
-
-    iterate(dir)
-    addClass('current')(current())
-    addClass('next')(next())
-    addClass('prev')(prev())
-  }
-
-  btnLeft.addEventListener('click', animate('left'))
-  btnRight.addEventListener('click', animate('right'))
-
-  // TODO add support for scroll
-  // 1. save all x,y foreach scroll event (throttle by 100ms)
-  // 2. keep the first and last and diff them to calculate left och right scroll
-  // 3. Animate left or right based on diff
-
-  // Why is it scrolling back? It's bounces a bit after, maybe that's why
-  // Also, the first case shouldn't be necessary
-
-  var scrollEvts = []
-  var scrollTimer = null
-
-  var handleScrollStop = () => {
-    // 1. Keep first and second
-
-    var newScrollEvts = [scrollEvts[0], scrollEvts[scrollEvts.length - 1]]
-    scrollEvts = []
-    switch (true) {
-      case (newScrollEvts[1] === newScrollEvts[0]):
-        return;
-      case (newScrollEvts[1] > newScrollEvts[0]):
-        animate('left')()
-        break;
-      case (newScrollEvts[1] < newScrollEvts[0]):
-        animate('right')()
-        break;
-    }
-  }
-
-  var handleScroll = (ev) => {
-    scrollEvts.push(ev.target.scrollLeft)
-
-    clearTimeout(scrollTimer)
-    scrollTimer = setTimeout(handleScrollStop, 100)
-  }
-
-  container.addEventListener('scroll', handleScroll)
- </script>
+  btnLeft.addEventListener('click', slideShow.walk.bind(null, 1))
+  btnRight.addEventListener('click', slideShow.walk.bind(null, -1))
+</script>
 </body>
 </html>
