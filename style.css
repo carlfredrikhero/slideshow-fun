@@ -2,6 +2,12 @@
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
 html {
   touch-action: manipulation;
 }
@@ -11,36 +17,30 @@ html {
   max-width: 100%;
   margin: 0 auto;
   display: flex;
-  overflow:hidden;
+  overflow-x:hidden;
   touch-action: pan-x;
   position: relative;
+  padding-bottom: 2rem;
 }
 
 .slide {
   width: 100%;
   flex: none;
   transition: none;
-  display: flex;
   height: 200px;
   justify-content: center;
   align-items: center;
   font-size: 3rem;
+  display: none;
 }
 
-.animation .slide {
-  transition: transform .5s ease-out;
+.animation-next .slide,
+.animation-prev .slide {
+  transition: transform .6s ease;
 }
 
-.slide:not(.current):not(.next):not(.prev) {
-    display: none;
-}
-
-.slide.next {
-  order: 2;
-}
-
-.slide.current {
-  order: 1;
+.slide.current, .slide.next, .slide.prev {
+  display: flex;
 }
 
 .slide.prev {
@@ -48,25 +48,30 @@ html {
   margin-left: -100%;
 }
 
+.slide.current {
+  order: 1;
+}
 
-.animation-next .slide.current,
-.animation-next .slide.next,
-.animation-next .slide.prev {
+.slide.next {
+  order: 2;
+}
+
+.animate-next {
   transform: translateX(-100%);
 }
 
-.animation-prev .slide.current,
-.animation-prev .slide.next,
-.animation-prev .slide.prev {
+.animate-prev {
   transform: translateX(100%);
 }
 
 .indicators {
   display: flex;
   position: absolute;
-  bottom: 10px;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+  margin:0;
+  padding:0;
 }
 
 .indicators a {
@@ -85,6 +90,37 @@ html {
 
 .indicators a.current:before {
   background: goldenrod;
+}
+
+.controls {
+  position: absolute;
+  height: calc(100% - 2rem);
+  width: 100%;
+  display: flex;
+}
+
+.controls a {
+  width: 50%;
+  font-size: 5rem;
+  color: transparent;
+  align-items: center;
+  text-decoration: none;
+  display: flex;
+  transition: all .25s
+}
+
+.controls a:hover {
+  color: white;
+}
+
+.controls a.prev {
+  padding-left: 1rem;
+}
+
+.controls a.next {
+  text-align:right;
+  justify-content: flex-end;
+  padding-right: 1rem;
 }
 
 .s1 {
